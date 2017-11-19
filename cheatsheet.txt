@@ -1,0 +1,5 @@
+python3 -m bjia_bot.image_recognition.classifier_state_guess --disagree
+python3 -m bjia_bot.image_recognition.classifier_state_train 50 0
+python3 -m bjia_bot.image_recognition.classifier_state_check
+
+python3 -m clover.tool_set.ir_add_state
