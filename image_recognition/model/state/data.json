@@ -1,5 +1,4 @@
 {
-  "mirror_count": 3,
   "label_name_list": [
     "jump_ing",
     "jump_select_done",
@@ -7,5 +6,6 @@
     "jump_start",
     "result_btn",
     "result_start"
-  ]
+  ],
+  "mirror_count": 3
 }
