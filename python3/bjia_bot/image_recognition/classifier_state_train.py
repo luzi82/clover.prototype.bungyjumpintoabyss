@@ -80,7 +80,7 @@ if __name__ == '__main__':
         'mirror_count':    args.mirror_count
     }
     with open(os.path.join('image_recognition','model','state','data.json'),'w') as fout:
-        json.dump(j, fp=fout, indent=2)
+        json.dump(j, fp=fout, indent=2, sort_keys=True)
         fout.write('\n')
 
     test_sample_count       = int(len(sample_list)/10)
