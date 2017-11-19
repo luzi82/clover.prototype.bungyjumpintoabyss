@@ -34,12 +34,12 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='state classifier trainer')
-    parser.add_argument('epochs20', nargs='?', type=int, help="epochs20")
+    parser.add_argument('epochs', nargs='?', type=int, help="epochs")
     parser.add_argument('--testonly', action='store_true', help="test only")
     parser.add_argument('--summaryonly', action='store_true', help="summary only")
     args = parser.parse_args()
 
-    assert((args.epochs20!=None)or(args.testonly))
+    assert((args.epochs!=None)or(args.testonly))
 
     label_state_path = os.path.join('image_recognition','label','state')
     label_name_list = os.listdir(label_state_path)
@@ -94,7 +94,7 @@ if __name__ == '__main__':
 
         checkpointer = ModelCheckpoint(filepath=hdf5_fn, verbose=1, save_best_only=True)
         
-        epochs = args.epochs20
+        epochs = args.epochs
         model.fit(train_img_list, train_label_onehot_list,
             validation_data=(valid_img_list, valid_label_onehot_list),
             epochs=epochs, batch_size=20, callbacks=[checkpointer], verbose=1)
