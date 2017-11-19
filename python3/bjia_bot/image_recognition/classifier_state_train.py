@@ -36,11 +36,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='state classifier trainer')
     parser.add_argument('epochs', nargs='?', type=int, help="epochs")
     parser.add_argument('batch_size', nargs='?', type=int, help="batch_size")
-    parser.add_argument('--testonly', action='store_true', help="test only")
     parser.add_argument('--summaryonly', action='store_true', help="summary only")
     args = parser.parse_args()
 
-    assert((args.epochs!=None)or(args.testonly))
+    assert(((args.epochs!=None)and(args.batch_size!=None))or(args.summaryonly))
 
     label_state_path = os.path.join('image_recognition','label','state')
     label_name_list = os.listdir(label_state_path)
@@ -82,23 +81,22 @@ if __name__ == '__main__':
     clover.common.reset_dir(os.path.join('image_recognition','model','state'))
     hdf5_fn = os.path.join('image_recognition','model','state','weight.hdf5')
         
-    if not args.testonly:
-        j = {
-            'label_name_list': label_name_list
-        }
-        with open(os.path.join('image_recognition','model','state','data.json'),'w') as fout:
-            json.dump(j, fp=fout, indent=2)
-            fout.write('\n')
+    j = {
+        'label_name_list': label_name_list
+    }
+    with open(os.path.join('image_recognition','model','state','data.json'),'w') as fout:
+        json.dump(j, fp=fout, indent=2)
+        fout.write('\n')
 
-        train_img_list, train_label_onehot_list = sample_list_to_data_set(train_sample_list,label_count)
-        valid_img_list, valid_label_onehot_list = sample_list_to_data_set(valid_sample_list,label_count)
+    train_img_list, train_label_onehot_list = sample_list_to_data_set(train_sample_list,label_count)
+    valid_img_list, valid_label_onehot_list = sample_list_to_data_set(valid_sample_list,label_count)
 
-        checkpointer = ModelCheckpoint(filepath=hdf5_fn, verbose=1, save_best_only=True)
-        
-        epochs = args.epochs
-        model.fit(train_img_list, train_label_onehot_list,
-            validation_data=(valid_img_list, valid_label_onehot_list),
-            epochs=epochs, batch_size=args.batch_size, callbacks=[checkpointer], verbose=1)
+    checkpointer = ModelCheckpoint(filepath=hdf5_fn, verbose=1, save_best_only=True)
+    
+    epochs = args.epochs
+    model.fit(train_img_list, train_label_onehot_list,
+        validation_data=(valid_img_list, valid_label_onehot_list),
+        epochs=epochs, batch_size=args.batch_size, callbacks=[checkpointer], verbose=1)
 
     model.load_weights(hdf5_fn)
 
