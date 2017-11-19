@@ -40,3 +40,8 @@ def readlines(fn):
         ret = fin.readlines()
     ret = [ i.strip() for i in ret ]
     return ret
+
+def writelines(fn, txt_list):
+    with open(fn, mode='wt', encoding='utf-8') as fout:
+        for txt in txt_list:
+            fout.write('{}\n'.format(txt))
